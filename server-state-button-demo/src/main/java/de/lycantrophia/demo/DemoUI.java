@@ -18,6 +18,7 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings({"serial", "WeakerAccess"})
 public class DemoUI extends UI
 {
+    private static final int MAX_RAM = 4096;
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = DemoUI.class, widgetset = "de.lycantrophia.demo.DemoWidgetSet")
@@ -31,7 +32,7 @@ public class DemoUI extends UI
         final ServerStateButton component = new ServerStateButton();
         component.setServerName("MCServer");
         component.setMaxRam(4096);
-        component.updateServerInfo("5", 0.35, 684);
+        component.updateServerInfo("" + (int)(Math.random() * 20), Math.random(), (int)(Math.random() * MAX_RAM));
         component.setWidth(140, Unit.PIXELS);
         component.setHeight(140, Unit.PIXELS);
 

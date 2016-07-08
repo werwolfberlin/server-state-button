@@ -91,13 +91,12 @@ public class ServerStateButtonWidget extends FlexTable {
 		String color = createColor(value);
 		label.getElement().getStyle().setBackgroundColor(color);
 		label.getElement().getStyle().setWidth(value * 100, Style.Unit.PCT);
-//		label.setText(color);
 	}
 
-	private String createColor(double cpuLoad)
+	private String createColor(double value)
 	{
-		int r = cpuLoad < 0.5 ? (int)(cpuLoad * 2 * MAX_COLOR) : MAX_COLOR;
-		int g = cpuLoad > 0.5 ? (int)((cpuLoad - 0.5) * 2 * MAX_COLOR) : MAX_COLOR;
+		int r = value < 0.5 ? (int)(value * 2 * MAX_COLOR) : MAX_COLOR;
+		int g = value > 0.5 ? (int)((value - 1) * -2 * MAX_COLOR) : MAX_COLOR;
 
 		return rgbToHexString(r, g, 0);
 	}
