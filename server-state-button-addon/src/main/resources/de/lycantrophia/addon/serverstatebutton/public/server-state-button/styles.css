@@ -21,12 +21,6 @@
 
 .server-state-caption {
     font-size: 80%;
-    padding-left:5px;
-}
-
-.server-state-bar {
-    height: 100%;
-    font-size: 80%;
 }
 
 .server-state-users {

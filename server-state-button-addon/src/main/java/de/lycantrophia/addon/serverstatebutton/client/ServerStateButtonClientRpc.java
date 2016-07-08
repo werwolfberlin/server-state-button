@@ -7,4 +7,6 @@ import com.vaadin.shared.communication.ClientRpc;
 public interface ServerStateButtonClientRpc extends ClientRpc {
 	void setServerName(String serverName);
 	void setMaxRam(int maxRam);
+	void setVertical(boolean isVertivalLayout);
+	void updateServerInfo(String users, double cpuLoad, int memoryUsage);
 }

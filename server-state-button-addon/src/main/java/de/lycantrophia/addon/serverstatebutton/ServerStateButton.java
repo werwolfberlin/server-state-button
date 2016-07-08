@@ -35,8 +35,11 @@ public class ServerStateButton extends com.vaadin.ui.AbstractComponent {
 	}
 
 	public ServerStateButton() {
+		this(true);
+	}
 
-		// To receive events from the client, we register ServerRpc
+	public ServerStateButton(boolean isVertivalLayout) {
+		getRpcProxy(ServerStateButtonClientRpc.class).setVertical(isVertivalLayout);
 		registerRpc((ServerStateButtonServerRpc) this::fireClickEvent);
 	}
 
@@ -52,10 +55,7 @@ public class ServerStateButton extends com.vaadin.ui.AbstractComponent {
 
 	public void updateServerInfo(final String users, final double cpuLoad, final int memoryUsage)
 	{
-		final ServerStateButtonState state = getState();
-		state.setUserCount(users);
-		state.setCpuLoad(cpuLoad);
-		state.setRamUsage(memoryUsage);
+		getRpcProxy(ServerStateButtonClientRpc.class).updateServerInfo(users, cpuLoad, memoryUsage);
 	}
 
 	public void setMaxRam(int maxRam) {

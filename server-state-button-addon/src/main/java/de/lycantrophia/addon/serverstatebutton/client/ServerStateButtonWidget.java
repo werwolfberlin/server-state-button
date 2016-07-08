@@ -1,8 +1,6 @@
 package de.lycantrophia.addon.serverstatebutton.client;
 
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.*;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.*;
 
 // Extend any GWT Widget
@@ -16,6 +14,8 @@ public class ServerStateButtonWidget extends FlexTable {
 	private final Label ramUsageLabel = new Label("");
 
 	private int maxRam = 1024;
+
+	private boolean isVertical = false;
 
 	public ServerStateButtonWidget() {
 
@@ -37,23 +37,86 @@ public class ServerStateButtonWidget extends FlexTable {
 		setBorderWidth(0);
 		setWidth("100%");
 		setHeight("100%");
+	}
 
-		final FlexTable flexTable = new FlexTable();
-		flexTable.getElement().getStyle().setDisplay(Style.Display.INLINE_TABLE);
-		flexTable.setCellPadding(0);
-		flexTable.setCellSpacing(3);
-		flexTable.setBorderWidth(0);
-		flexTable.setWidth("100%");
-		flexTable.setHeight("100%");
+	public void setVertical(boolean vertical) {
+		isVertical = vertical;
+		setWidget(1, 0, isVertical ? createVerticalLayout() : createHorizontalLayout());
+	}
+
+	private FlexTable createVerticalLayout()
+	{
+		final FlexTable contentTable = new FlexTable();
+		contentTable.setCellPadding(0);
+		contentTable.setCellSpacing(3);
+		contentTable.setBorderWidth(0);
+		contentTable.setWidth("100%");
+		contentTable.setHeight("100%");
+
+		final ColumnFormatter columnFormatter = contentTable.getColumnFormatter();
+		columnFormatter.setWidth(0, "25%");
+		columnFormatter.setWidth(1, "25%");
+		columnFormatter.setWidth(2, "25%");
+		columnFormatter.setWidth(3, "25%");
 
 		// State is set to widget in ServerStateButtonConnector
-		final FlexTable.FlexCellFormatter cellFormatter = flexTable.getFlexCellFormatter();
+		final FlexCellFormatter cellFormatter = contentTable.getFlexCellFormatter();
+		cellFormatter.setColSpan(0, 1, 2);
+		cellFormatter.setColSpan(1, 0, 2);
+		cellFormatter.setRowSpan(0, 0, 3);
+		cellFormatter.setRowSpan(0, 2, 3);
+
+		cellFormatter.setHeight(0, 0, "100%");
+		cellFormatter.setHeight(0, 1, "100%");
+
+		//adjustments
+		cellFormatter.setAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_BOTTOM);
+		cellFormatter.setAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+		cellFormatter.setAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_BOTTOM);
+
+		cellFormatter.setAlignment(1, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_BOTTOM);
+
+		cellFormatter.setAlignment(2, 0, HasHorizontalAlignment.ALIGN_LEFT,   HasVerticalAlignment.ALIGN_BOTTOM);
+		cellFormatter.setAlignment(2, 1, HasHorizontalAlignment.ALIGN_RIGHT,  HasVerticalAlignment.ALIGN_BOTTOM);
+
+		// user online
+		final Label usersText = new Label("Users");
+		usersText.addStyleName("server-state-caption");
+		usersLabel.addStyleName("server-state-users");
+		contentTable.setWidget(0, 1, usersLabel);
+		contentTable.setWidget(1, 0, usersText);
+
+		final Label cpuLoadText = new Label("CPU");
+		cpuLoadText.addStyleName("server-state-caption");
+		contentTable.setWidget(0, 0, cpuLoadLabel);
+		contentTable.setWidget(2, 0, cpuLoadText);
+
+		final Label ramUsageText = new Label("RAM");
+		ramUsageText.addStyleName("server-state-caption");
+		contentTable.setWidget(0, 2, ramUsageLabel);
+		contentTable.setWidget(2, 1, ramUsageText);
+
+		return contentTable;
+	}
+
+	private FlexTable createHorizontalLayout()
+	{
+		final FlexTable contentTable = new FlexTable();
+		contentTable.getElement().getStyle().setDisplay(Style.Display.INLINE_TABLE);
+		contentTable.setCellPadding(0);
+		contentTable.setCellSpacing(3);
+		contentTable.setBorderWidth(0);
+		contentTable.setWidth("100%");
+		contentTable.setHeight("100%");
+
+		// State is set to widget in ServerStateButtonConnector
+		final FlexCellFormatter cellFormatter = contentTable.getFlexCellFormatter();
 
 		//adjustments
 		cellFormatter.setAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_MIDDLE);
 		cellFormatter.setAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 
-		flexTable.getColumnFormatter().setWidth(1, "100%");
+		contentTable.getColumnFormatter().setWidth(1, "100%");
 
 		cellFormatter.setHeight(0, 1, "100%");
 		cellFormatter.setHeight(0, 0, "100%");
@@ -66,22 +129,20 @@ public class ServerStateButtonWidget extends FlexTable {
 		final Label usersText = new Label("Users");
 		usersText.addStyleName("server-state-caption");
 		usersLabel.addStyleName("server-state-users");
-		flexTable.setWidget(0, 0, usersText);
-		flexTable.setWidget(0, 1, usersLabel);
+		contentTable.setWidget(0, 0, usersText);
+		contentTable.setWidget(0, 1, usersLabel);
 
 		final Label cpuLoadText = new Label("CPU");
 		cpuLoadText.addStyleName("server-state-caption");
-		cpuLoadLabel.addStyleName("server-state-bar");
-		flexTable.setWidget(1, 0, cpuLoadText);
-		flexTable.setWidget(1, 1, cpuLoadLabel);
+		contentTable.setWidget(1, 0, cpuLoadText);
+		contentTable.setWidget(1, 1, cpuLoadLabel);
 
 		final Label ramUsageText = new Label("RAM");
 		ramUsageText.addStyleName("server-state-caption");
-		ramUsageLabel.addStyleName("server-state-bar");
-		flexTable.setWidget(2, 0, ramUsageText);
-		flexTable.setWidget(2, 1, ramUsageLabel);
+		contentTable.setWidget(2, 0, ramUsageText);
+		contentTable.setWidget(2, 1, ramUsageLabel);
 
-		setWidget(1, 0, flexTable);
+		return contentTable;
 	}
 
 	public void setServerName(final String name)
@@ -96,10 +157,23 @@ public class ServerStateButtonWidget extends FlexTable {
 		setBarValue(ramUsageLabel, ((double)memoryUsage/(double)maxRam));
 	}
 
-	private void setBarValue(Label label, double value) {
-		double val = value > 1 ? 1 : value;
-		label.getElement().getStyle().setBackgroundColor(createColor(val));
-		label.getElement().getStyle().setWidth(val * 100, Style.Unit.PCT);
+	private void setBarValue(final Label label, final double value) {
+		final double val = value > 1 ? 1 : value;
+		final double percVal = val * 100;
+		final Style style = label.getElement().getStyle();
+
+		style.setBackgroundColor(createColor(val));
+
+		if(isVertical)
+		{
+			style.setHeight(percVal, Style.Unit.PCT);
+			style.setWidth (100, Style.Unit.PCT);
+		}
+		else
+		{
+			style.setHeight(100, Style.Unit.PCT);
+			style.setWidth (percVal, Style.Unit.PCT);
+		}
 	}
 
 	private String createColor(double value)

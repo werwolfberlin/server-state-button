@@ -25,15 +25,21 @@ public class ServerStateButtonConnector extends AbstractComponentConnector {
 		
 		// To receive RPC events from server, we register ClientRpc implementation 
 		registerRpc(ServerStateButtonClientRpc.class, new ServerStateButtonClientRpc() {
-			@Override
-			public void setServerName(String serverName) {
+			@Override public void setMaxRam(final int maxRam) {
+				getWidget().setMaxRam(maxRam);
+			}
+
+			@Override public void setVertical(final boolean isVertivalLayout) {
+				getWidget().setVertical(isVertivalLayout);
+			}
+
+			@Override public void setServerName(final String serverName)
+			{
 				getWidget().setServerName(serverName);
 			}
 
-			@Override
-			public void setMaxRam(int maxRam) {
-				getWidget().setMaxRam(maxRam);
-
+			@Override public void updateServerInfo(final String users, final double cpuLoad, final int memoryUsage) {
+				getWidget().setStatistics(users, cpuLoad, memoryUsage);
 			}
 		});
 
