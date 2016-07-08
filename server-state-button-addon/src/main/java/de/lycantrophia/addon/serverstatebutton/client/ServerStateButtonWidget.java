@@ -1,10 +1,9 @@
 package de.lycantrophia.addon.serverstatebutton.client;
 
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.*;
 
 // Extend any GWT Widget
 @SuppressWarnings("WeakerAccess")
@@ -20,55 +19,69 @@ public class ServerStateButtonWidget extends FlexTable {
 
 	public ServerStateButtonWidget() {
 
-		setCellPadding(0);
-		setCellSpacing(0);
-		setBorderWidth(0);
-		// CSS class-name should not be v- prefixed
 		setStyleName("server-state-button");
-
-		// State is set to widget in ServerStateButtonConnector
-		final FlexCellFormatter cellFormatter = getFlexCellFormatter();
-
-		getColumnFormatter().setWidth(1, "100%");
-		cellFormatter.setHeight(1, 1, "100%");
-
-		cellFormatter.setAlignment(1, 0, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_MIDDLE);
-		cellFormatter.setAlignment(1, 1, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-
-//		cellFormatter.setAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_BOTTOM);
-//		cellFormatter.setAlignment(2, 1, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_BOTTOM);
-
-		//header
-		cellFormatter.setColSpan(0, 0, 2);
-		cellFormatter.setWidth(0, 0, "100%");
-		cellFormatter.setWidth(1, 1, "100%");
-		cellFormatter.setWidth(2, 1, "100%");
-		cellFormatter.setWidth(3, 1, "100%");
-
-		cellFormatter.setHeight(1, 1, "100%");
+		getElement().getStyle().setDisplay(Style.Display.INLINE_TABLE);
 
 		nameLabel.addStyleName("server-state-server-name");
 		nameLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		nameLabel.setWidth("100%");
+
 		setWidget(0, 0, nameLabel);
+		getFlexCellFormatter().setWidth(0, 0, "100%");
+
+		getFlexCellFormatter().setWidth(1, 0, "100%");
+		getFlexCellFormatter().setHeight(1, 0, "100%");
+
+		setCellPadding(0);
+		setCellSpacing(0);
+		setBorderWidth(0);
+		setWidth("100%");
+		setHeight("100%");
+
+		final FlexTable flexTable = new FlexTable();
+		flexTable.getElement().getStyle().setDisplay(Style.Display.INLINE_TABLE);
+		flexTable.setCellPadding(0);
+		flexTable.setCellSpacing(3);
+		flexTable.setBorderWidth(0);
+		flexTable.setWidth("100%");
+		flexTable.setHeight("100%");
+
+		// State is set to widget in ServerStateButtonConnector
+		final FlexTable.FlexCellFormatter cellFormatter = flexTable.getFlexCellFormatter();
+
+		//adjustments
+		cellFormatter.setAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_MIDDLE);
+		cellFormatter.setAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+
+		flexTable.getColumnFormatter().setWidth(1, "100%");
+
+		cellFormatter.setHeight(0, 1, "100%");
+		cellFormatter.setHeight(0, 0, "100%");
+
+		cellFormatter.setWidth(0, 1, "100%");
+		cellFormatter.setWidth(1, 1, "100%");
+		cellFormatter.setWidth(2, 1, "100%");
 
 		// user online
 		final Label usersText = new Label("Users");
 		usersText.addStyleName("server-state-caption");
 		usersLabel.addStyleName("server-state-users");
-		setWidget(1, 0, usersText);
-		setWidget(1, 1, usersLabel);
+		flexTable.setWidget(0, 0, usersText);
+		flexTable.setWidget(0, 1, usersLabel);
 
-		Label cpuLoadText = new Label("CPU");
+		final Label cpuLoadText = new Label("CPU");
 		cpuLoadText.addStyleName("server-state-caption");
 		cpuLoadLabel.addStyleName("server-state-bar");
-		setWidget(2, 0, cpuLoadText);
-		setWidget(2, 1, cpuLoadLabel);
+		flexTable.setWidget(1, 0, cpuLoadText);
+		flexTable.setWidget(1, 1, cpuLoadLabel);
 
-		Label ramUsageText = new Label("RAM");
+		final Label ramUsageText = new Label("RAM");
 		ramUsageText.addStyleName("server-state-caption");
 		ramUsageLabel.addStyleName("server-state-bar");
-		setWidget(3, 0, ramUsageText);
-		setWidget(3, 1, ramUsageLabel);
+		flexTable.setWidget(2, 0, ramUsageText);
+		flexTable.setWidget(2, 1, ramUsageLabel);
+
+		setWidget(1, 0, flexTable);
 	}
 
 	public void setServerName(final String name)
@@ -79,18 +92,14 @@ public class ServerStateButtonWidget extends FlexTable {
 	public void setStatistics(final String userCount, final double cpuLoad, final int memoryUsage)
 	{
 		usersLabel.setText(userCount);
-
-//		cpuLoadLabel.setText(createPercentageString(cpuLoad));
 		setBarValue(cpuLoadLabel, cpuLoad);
-
-//		ramUsageLabel.setText(memoryUsage + "MB");
 		setBarValue(ramUsageLabel, ((double)memoryUsage/(double)maxRam));
 	}
 
 	private void setBarValue(Label label, double value) {
-		String color = createColor(value);
-		label.getElement().getStyle().setBackgroundColor(color);
-		label.getElement().getStyle().setWidth(value * 100, Style.Unit.PCT);
+		double val = value > 1 ? 1 : value;
+		label.getElement().getStyle().setBackgroundColor(createColor(val));
+		label.getElement().getStyle().setWidth(val * 100, Style.Unit.PCT);
 	}
 
 	private String createColor(double value)

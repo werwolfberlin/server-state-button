@@ -88,7 +88,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>de.lycantrophia</groupId>
+			<groupId>de.lycantrophia.addon</groupId>
 			<artifactId>server-state-button</artifactId>
 			<version>${project.version}</version>
 		</dependency>
