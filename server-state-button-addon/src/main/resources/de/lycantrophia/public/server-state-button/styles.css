@@ -1,0 +1,41 @@
+.server-state-button {
+    background-color: rgba(0, 0, 0, 0.05);
+    border:1px solid darkgray;
+    margin: 0;
+}
+
+.server-state-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.server-state-button:active {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.server-state-server-name {
+    background-color: rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+    font-size: 90%;
+}
+
+.server-state-caption {
+    font-size: 80%;
+    padding-left:5px;
+}
+
+.server-state-bar {
+    height: 5px;
+    font-size: 80%;
+}
+
+.server-state-users {
+    font-size: 250%;
+}
+
+.server-state-cpu {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.server-state-ram {
+    background-color: rgba(0, 0, 0, 0.05);
+}
