@@ -1,5 +1,6 @@
-package de.lycantrophia.client;
+package de.lycantrophia.addon.serverstatebutton.client;
 
+@SuppressWarnings("WeakerAccess")
 public class ServerStateButtonState extends com.vaadin.shared.AbstractComponentState {
 
 	// State can have both public variable and bean properties

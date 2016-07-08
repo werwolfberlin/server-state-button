@@ -1,4 +1,4 @@
-package de.lycantrophia.client;
+package de.lycantrophia.addon.serverstatebutton.client;
 
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.communication.ServerRpc;
@@ -7,6 +7,6 @@ import com.vaadin.shared.communication.ServerRpc;
 public interface ServerStateButtonServerRpc extends ServerRpc {
 
 	// Example API: Widget click is clicked
-	public void clicked(MouseEventDetails mouseDetails);
+	void clicked(MouseEventDetails mouseDetails);
 
 }

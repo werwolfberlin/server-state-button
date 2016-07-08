@@ -1,4 +1,4 @@
-package de.lycantrophia.client;
+package de.lycantrophia.addon.serverstatebutton.client;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -7,9 +7,10 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 
 // Extend any GWT Widget
+@SuppressWarnings("WeakerAccess")
 public class ServerStateButtonWidget extends FlexTable {
 
-	public static final int MAX_COLOR = 200;
+	private static final int MAX_COLOR = 200;
 	private final Label nameLabel = new Label("");
 	private final Label usersLabel = new Label("");
 	private final Label cpuLoadLabel = new Label("");

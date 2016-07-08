@@ -1,9 +1,9 @@
-package de.lycantrophia;
+package de.lycantrophia.addon.serverstatebutton;
 
 import com.vaadin.ui.Button;
-import de.lycantrophia.client.ServerStateButtonClientRpc;
-import de.lycantrophia.client.ServerStateButtonServerRpc;
-import de.lycantrophia.client.ServerStateButtonState;
+import de.lycantrophia.addon.serverstatebutton.client.ServerStateButtonClientRpc;
+import de.lycantrophia.addon.serverstatebutton.client.ServerStateButtonServerRpc;
+import de.lycantrophia.addon.serverstatebutton.client.ServerStateButtonState;
 
 import com.vaadin.shared.MouseEventDetails;
 
@@ -34,29 +34,10 @@ public class ServerStateButton extends com.vaadin.ui.AbstractComponent {
 		}
 	}
 
-	// To process events from the client, we implement ServerRpc
-	private ServerStateButtonServerRpc rpc = new ServerStateButtonServerRpc() {
-
-		// Event received from client - user clicked our widget
-		public void clicked(MouseEventDetails mouseDetails) {
-			fireClickEvent(mouseDetails);
-//			System.out.println("clicked");
-			// Send nag message every 5:th click with ClientRpc
-//			if (++clickCount % 5 == 0) {
-//				getRpcProxy(ServerStateButtonClientRpc.class)
-//						.alert("Ok, that's enough!");
-//			}
-//
-//			// Update shared state. This state update is automatically
-//			// sent to the client.
-//			getState().text = "You have clicked " + clickCount + " times";
-		}
-	};
-
 	public ServerStateButton() {
 
 		// To receive events from the client, we register ServerRpc
-		registerRpc(rpc);
+		registerRpc((ServerStateButtonServerRpc) this::fireClickEvent);
 	}
 
 	// We must override getState() to cast the state to ServerStateButtonState

@@ -1,6 +1,6 @@
 package de.lycantrophia.demo;
 
-import de.lycantrophia.ServerStateButton;
+import de.lycantrophia.addon.serverstatebutton.ServerStateButton;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -15,7 +15,7 @@ import com.vaadin.ui.VerticalLayout;
 
 @Theme("demo")
 @Title("ServerStateButton Add-on Demo")
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "WeakerAccess"})
 public class DemoUI extends UI
 {
 

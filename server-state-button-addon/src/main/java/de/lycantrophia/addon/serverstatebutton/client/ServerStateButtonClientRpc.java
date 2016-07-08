@@ -1,4 +1,4 @@
-package de.lycantrophia.client;
+package de.lycantrophia.addon.serverstatebutton.client;
 
 import com.vaadin.shared.communication.ClientRpc;
 
