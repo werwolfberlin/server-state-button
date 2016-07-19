@@ -19,7 +19,7 @@ public class ServerStateButtonWidget extends FlexTable {
 
 	public ServerStateButtonWidget() {
 
-		setStyleName("server-state-button");
+		addStyleName("server-state-button");
 		getElement().getStyle().setDisplay(Style.Display.INLINE_TABLE);
 
 		nameLabel.addStyleName("server-state-server-name");
@@ -90,11 +90,13 @@ public class ServerStateButtonWidget extends FlexTable {
 		cpuLoadText.addStyleName("server-state-caption");
 		contentTable.setWidget(0, 0, cpuLoadLabel);
 		contentTable.setWidget(2, 0, cpuLoadText);
+		cellFormatter.addStyleName(0, 0, "bar-border");
 
 		final Label ramUsageText = new Label("RAM");
 		ramUsageText.addStyleName("server-state-caption");
 		contentTable.setWidget(0, 2, ramUsageLabel);
 		contentTable.setWidget(2, 1, ramUsageText);
+		cellFormatter.addStyleName(0, 2, "bar-border");
 
 		return contentTable;
 	}
@@ -136,11 +138,13 @@ public class ServerStateButtonWidget extends FlexTable {
 		cpuLoadText.addStyleName("server-state-caption");
 		contentTable.setWidget(1, 0, cpuLoadText);
 		contentTable.setWidget(1, 1, cpuLoadLabel);
+		cellFormatter.addStyleName(1, 1, "bar-border");
 
 		final Label ramUsageText = new Label("RAM");
 		ramUsageText.addStyleName("server-state-caption");
 		contentTable.setWidget(2, 0, ramUsageText);
 		contentTable.setWidget(2, 1, ramUsageLabel);
+		cellFormatter.addStyleName(2, 1, "bar-border");
 
 		return contentTable;
 	}
